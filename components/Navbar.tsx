@@ -56,7 +56,7 @@ export default function Navbar() {
             href={session ? "/client_area" : "/register"}
             className="rounded-full bg-slate-900 px-4 py-2 font-medium text-white transition hover:bg-slate-700"
           >
-            {session ? "Client Area" : "สมัครสมาชิก"}
+            {session ? "Client Area" : "Register"}
           </Link>
         </nav>
       </div>

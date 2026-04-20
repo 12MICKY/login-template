@@ -10,14 +10,14 @@ export function ForgotIdUserForm() {
   return (
     <div className="flex min-h-[calc(100vh-73px)] items-center justify-center px-4 py-10">
       <div className="w-full max-w-md rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_25px_90px_rgba(15,23,42,0.10)]">
-        <h1 className="text-3xl font-bold text-slate-950">ลืม iduser</h1>
+        <h1 className="text-3xl font-bold text-slate-950">Forgot iduser</h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          กรอกชื่อ นามสกุล และเบอร์โทรที่ใช้สมัคร เพื่อค้นหา iduser
+          Enter the registered name, surname, and phone number to look up an iduser.
         </p>
 
         <form action={action} className="mt-8 space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">ชื่อ</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Name</label>
             <input
               name="name"
               type="text"
@@ -27,7 +27,7 @@ export function ForgotIdUserForm() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">นามสกุล</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Surname</label>
             <input
               name="surname"
               type="text"
@@ -37,7 +37,7 @@ export function ForgotIdUserForm() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">เบอร์โทร</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Phone Number</label>
             <input
               name="phone"
               type="tel"
@@ -56,7 +56,7 @@ export function ForgotIdUserForm() {
 
           {state?.matches && (
             <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-4 text-sm text-green-800">
-              <p className="font-semibold">พบบัญชีที่ตรงกับข้อมูลของคุณ</p>
+              <p className="font-semibold">Matching account found</p>
               <div className="mt-3 space-y-2">
                 {state.matches.map((match) => (
                   <div key={match.iduser} className="rounded-xl border border-green-200 bg-white px-3 py-2">
@@ -77,16 +77,16 @@ export function ForgotIdUserForm() {
             disabled={pending}
             className="w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {pending ? "กำลังค้นหา..." : "ค้นหา iduser"}
+            {pending ? "Searching..." : "Find iduser"}
           </button>
         </form>
 
         <div className="mt-6 flex flex-wrap gap-3 text-sm">
           <Link href="/forgot-password" className="font-medium text-blue-600 hover:underline">
-            ไปหน้าลืมรหัสผ่าน
+            Go to forgot password
           </Link>
           <Link href="/login" className="font-medium text-blue-600 hover:underline">
-            กลับไปหน้า login
+            Back to login
           </Link>
         </div>
       </div>

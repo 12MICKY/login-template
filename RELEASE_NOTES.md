@@ -1,8 +1,13 @@
 # Release Notes
 
+## v0.3.1
+
+- converted all remaining user-facing copy and documentation to English
+- updated auth pages, validation messages, and demo defaults to be English-first
+
 ## v0.2.0
 
-- เพิ่ม auto-seed demo user ผ่าน environment variables
-- เพิ่มการแสดง demo account บนหน้าแรกสำหรับ local/dev usage
-- เพิ่ม `Dockerfile` และ `docker-compose.yml` เพื่อเปิด app พร้อม PostgreSQL ได้เร็ว
-- อัปเดต README และ `.env.example` ให้รองรับการเริ่มใช้งานแบบเร็ว
+- added demo-user auto-seeding through environment variables
+- added a homepage demo-account panel for local development usage
+- added `Dockerfile` and `docker-compose.yml` for faster app + PostgreSQL startup
+- updated `README.md` and `.env.example` for a quicker setup path

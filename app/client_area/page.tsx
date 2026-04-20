@@ -17,23 +17,25 @@ export default async function ClientAreaPage() {
         </span>
         <h1 className="mt-4 text-3xl font-bold text-slate-950">Client Area</h1>
         <p className="mt-3 text-sm leading-6 text-slate-600">
-          เข้าสู่ระบบแล้วในฐานะ <span className="font-semibold">{session.user.iduser}</span> ({session.user.name}{" "}
+          You are signed in as <span className="font-semibold">{session.user.iduser}</span> ({session.user.name}{" "}
           {session.user.surname})
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <p className="text-sm font-semibold text-slate-900">ตัวอย่างสิ่งที่เช็กได้</p>
+            <p className="text-sm font-semibold text-slate-900">What this page demonstrates</p>
             <ul className="mt-3 space-y-2 text-sm text-slate-600">
               <li>route protection</li>
-              <li>session cookie ฝั่ง server</li>
+              <li>server-side session cookie</li>
               <li>logout</li>
             </ul>
           </div>
 
           <form action={logout} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <p className="text-sm font-semibold text-slate-900">ออกจากระบบ</p>
-            <p className="mt-3 text-sm text-slate-600">ใช้ปุ่มนี้ทดสอบการล้าง session และ redirect กลับหน้า login</p>
+            <p className="text-sm font-semibold text-slate-900">Sign Out</p>
+            <p className="mt-3 text-sm text-slate-600">
+              Use this button to test session cleanup and redirection back to the login page.
+            </p>
             <button
               type="submit"
               className="mt-5 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"

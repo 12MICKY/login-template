@@ -15,19 +15,19 @@ export async function resetPassword(_: ForgotPasswordActionState | undefined, fo
 
   if (!iduser || !phone || !newPassword || !confirmPassword) {
     return {
-      error: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+      error: "Please complete all fields.",
     };
   }
 
   if (!/^[0-9]{10}$/.test(phone.replace(/\D+/g, ""))) {
     return {
-      error: "กรุณากรอกเบอร์โทร 10 หลัก",
+      error: "Please enter a 10-digit phone number.",
     };
   }
 
   if (newPassword !== confirmPassword) {
     return {
-      error: "ยืนยันรหัสผ่านใหม่ไม่ตรงกัน",
+      error: "Password confirmation does not match.",
     };
   }
 
@@ -41,7 +41,7 @@ export async function resetPassword(_: ForgotPasswordActionState | undefined, fo
   const result = await resetPasswordByIdentity({ iduser, phone, newPassword });
   if (!result) {
     return {
-      error: "ไม่พบบัญชีที่ตรงกับ iduser และเบอร์โทร",
+      error: "No account matched the provided iduser and phone number.",
     };
   }
 

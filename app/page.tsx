@@ -13,11 +13,11 @@ export default function HomePage() {
           </span>
           <div className="space-y-4">
             <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">
-              ตัวอย่างระบบ login พร้อม flow กู้บัญชีและสมัครสมาชิก สำหรับเอาไปต่อยอดในงานอื่น
+              A reusable login starter with registration and account recovery flows for your next project
             </h1>
             <p className="max-w-2xl text-lg text-slate-600">
-              template นี้แยกหน้าและ action สำคัญให้พร้อม ทั้ง login, forgot iduser, forgot password,
-              register และตัวอย่าง session ฝั่ง server
+              This template ships with ready-to-adapt pages and server actions for login, forgot ID,
+              forgot password, registration, and a protected session example.
             </p>
           </div>
 
@@ -26,13 +26,13 @@ export default function HomePage() {
               href="/login"
               className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
             >
-              เปิดหน้า Login
+              Open Login
             </Link>
             <Link
               href="/register"
               className="rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-950"
             >
-              ทดลองสมัครสมาชิก
+              Try Registration
             </Link>
           </div>
         </div>
@@ -40,10 +40,10 @@ export default function HomePage() {
         <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_80px_rgba(15,23,42,0.08)]">
           <div className="grid gap-4 sm:grid-cols-2">
             {[
-              ["Login", "เข้าสู่ระบบด้วย iduser และรหัสผ่าน"],
-              ["Forgot ID", "ค้นหา iduser จากข้อมูลยืนยันตัวตน"],
-              ["Forgot Password", "ตั้งรหัสผ่านใหม่จาก iduser และเบอร์โทร"],
-              ["Register", "สมัครสมาชิกพร้อมสร้าง iduser อัตโนมัติ"],
+              ["Login", "Sign in with iduser and password."],
+              ["Forgot ID", "Recover an iduser from identity data."],
+              ["Forgot Password", "Reset a password using iduser and phone."],
+              ["Register", "Create a new account with an auto-generated iduser."],
             ].map(([title, detail]) => (
               <div key={title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm font-semibold text-slate-900">{title}</p>

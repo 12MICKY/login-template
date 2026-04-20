@@ -14,8 +14,8 @@ export function LoginForm() {
           <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
             Login Flow
           </span>
-          <h1 className="mt-4 text-3xl font-bold text-slate-950">เข้าสู่ระบบ</h1>
-          <p className="mt-2 text-sm leading-6 text-slate-600">กรุณาเข้าสู่ระบบด้วย iduser และรหัสผ่าน</p>
+          <h1 className="mt-4 text-3xl font-bold text-slate-950">Sign In</h1>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Enter your iduser and password to continue.</p>
         </div>
 
         <form action={action} className="mt-8 space-y-4">
@@ -25,13 +25,13 @@ export function LoginForm() {
               name="iduser"
               type="text"
               required
-              placeholder="เช่น GL0001"
+              placeholder="e.g. GL0001"
               className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">รหัสผ่าน</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
             <input
               name="password"
               type="password"
@@ -52,19 +52,19 @@ export function LoginForm() {
             disabled={pending}
             className="w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {pending ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
+            {pending ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="mt-6 border-t border-slate-100 pt-5 text-center text-sm text-slate-500">
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
             <Link href="/account-recovery" className="font-medium text-blue-600 hover:underline">
-              ลืม iduser / ลืมรหัสผ่าน
+              Forgot iduser / Forgot password
             </Link>
             <span className="text-slate-300">|</span>
-            <span>ยังไม่มีบัญชี?</span>
+            <span>No account yet?</span>
             <Link href="/register" className="font-medium text-blue-600 hover:underline">
-              สมัครสมาชิก
+              Register
             </Link>
           </div>
         </div>

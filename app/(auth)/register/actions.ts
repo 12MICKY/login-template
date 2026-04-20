@@ -7,7 +7,7 @@ type RegisterActionState = {
   error?: string;
 };
 
-const thaiEnglishNamePattern = /^[A-Za-zก-๙ ]+$/;
+const unicodeNamePattern = /^[\p{L} ]+$/u;
 
 export async function register(_: RegisterActionState | undefined, formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
@@ -22,43 +22,43 @@ export async function register(_: RegisterActionState | undefined, formData: For
 
   if (!name || !surname || !nickname || !ageRaw || !gradeLevel || !school || !phone || !password) {
     return {
-      error: "กรุณากรอกข้อมูลให้ครบทุกช่อง",
+      error: "Please complete all fields.",
     };
   }
 
-  if (!thaiEnglishNamePattern.test(name)) {
+  if (!unicodeNamePattern.test(name)) {
     return {
-      error: "กรุณากรอกชื่อเป็นตัวอักษรเท่านั้น",
+      error: "Name must contain letters only.",
     };
   }
 
-  if (!thaiEnglishNamePattern.test(surname)) {
+  if (!unicodeNamePattern.test(surname)) {
     return {
-      error: "กรุณากรอกนามสกุลเป็นตัวอักษรเท่านั้น",
+      error: "Surname must contain letters only.",
     };
   }
 
-  if (!thaiEnglishNamePattern.test(nickname)) {
+  if (!unicodeNamePattern.test(nickname)) {
     return {
-      error: "กรุณากรอกชื่อเล่นเป็นตัวอักษรเท่านั้น",
+      error: "Nickname must contain letters only.",
     };
   }
 
-  if (!thaiEnglishNamePattern.test(school)) {
+  if (!unicodeNamePattern.test(school)) {
     return {
-      error: "กรุณากรอกชื่อโรงเรียนเป็นตัวอักษรเท่านั้น",
+      error: "School name must contain letters only.",
     };
   }
 
   if (!Number.isInteger(age) || age <= 0 || age > 120) {
     return {
-      error: "กรุณากรอกอายุให้ถูกต้อง",
+      error: "Please enter a valid age.",
     };
   }
 
   if (!/^[0-9]{10}$/.test(phone.replace(/\D+/g, ""))) {
     return {
-      error: "กรุณากรอกเบอร์โทร 10 หลัก",
+      error: "Please enter a 10-digit phone number.",
     };
   }
 

@@ -90,7 +90,7 @@ function getDemoSeedConfig(): DemoSeedConfig | null {
     surname: getOptionalTrimmedEnv("DEMO_USER_SURNAME") ?? "Student",
     nickname: getOptionalTrimmedEnv("DEMO_USER_NICKNAME") ?? "Demo",
     age: Number.isInteger(age) ? age : 16,
-    gradeLevel: getOptionalTrimmedEnv("DEMO_USER_GRADE_LEVEL") ?? "ม.4",
+    gradeLevel: getOptionalTrimmedEnv("DEMO_USER_GRADE_LEVEL") ?? "Grade 10",
     school: getOptionalTrimmedEnv("DEMO_USER_SCHOOL") ?? "Demo School",
     phone: normalizePhone(process.env.DEMO_USER_PHONE ?? "0812345678"),
     password,
@@ -221,19 +221,19 @@ function hashSessionToken(token: string) {
 
 export function validatePasswordStrength(password: string) {
   if (password.length < 8) {
-    return "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร";
+    return "Password must be at least 8 characters long.";
   }
 
   if (!/[a-z]/.test(password)) {
-    return "รหัสผ่านต้องมีตัวอักษรภาษาอังกฤษตัวพิมพ์เล็กอย่างน้อย 1 ตัว";
+    return "Password must include at least one lowercase letter.";
   }
 
   if (!/[A-Z]/.test(password)) {
-    return "รหัสผ่านต้องมีตัวอักษรภาษาอังกฤษตัวพิมพ์ใหญ่อย่างน้อย 1 ตัว";
+    return "Password must include at least one uppercase letter.";
   }
 
   if (!/[0-9]/.test(password)) {
-    return "รหัสผ่านต้องมีตัวเลขอย่างน้อย 1 ตัว";
+    return "Password must include at least one number.";
   }
 
   return null;

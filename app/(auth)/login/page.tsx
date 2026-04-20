@@ -15,17 +15,15 @@ export default async function LoginPage({
           <div className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
             {params.registered && (
               <>
-                สมัครสมาชิกสำเร็จ
+                Registration completed successfully
                 {registeredFullName && (
                   <>
-                    {" "}
-                    สำหรับ <span className="font-semibold">{registeredFullName}</span>
+                    {" "}for <span className="font-semibold">{registeredFullName}</span>
                   </>
-                )}{" "}
-                iduser ของคุณคือ <span className="font-semibold">{params.registered}</span>
+                )}. Your iduser is <span className="font-semibold">{params.registered}</span>
               </>
             )}
-            {!params.registered && params.reset && <>รีเซ็ตรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบอีกครั้ง</>}
+            {!params.registered && params.reset && <>Password reset successful. Please sign in again.</>}
           </div>
         </div>
       )}

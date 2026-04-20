@@ -20,20 +20,20 @@ export async function recoverIdUser(_: ForgotIdUserActionState | undefined, form
 
   if (!name || !surname || !phone) {
     return {
-      error: "กรุณากรอกชื่อ นามสกุล และเบอร์โทร",
+      error: "Please enter name, surname, and phone number.",
     };
   }
 
   if (!/^[0-9]{10}$/.test(phone.replace(/\D+/g, ""))) {
     return {
-      error: "กรุณากรอกเบอร์โทร 10 หลัก",
+      error: "Please enter a 10-digit phone number.",
     };
   }
 
   const matches = await findUserIdsByIdentity({ name, surname, phone });
   if (matches.length === 0) {
     return {
-      error: "ไม่พบบัญชีที่ตรงกับข้อมูลที่กรอก",
+      error: "No account matched the provided information.",
     };
   }
 

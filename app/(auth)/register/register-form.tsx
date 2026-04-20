@@ -12,8 +12,8 @@ export function RegisterForm() {
 
   const handleLetterOnlyInput = (event: FormEvent<HTMLInputElement>) => {
     const input = event.currentTarget;
-    input.value = input.value.replace(/[^A-Za-zก-๙ ]+/g, "");
-    input.setCustomValidity(input.value ? "" : "กรุณากรอกข้อมูลนี้");
+    input.value = input.value.replace(/[^\p{L} ]+/gu, "");
+    input.setCustomValidity(input.value ? "" : "Please fill out this field.");
   };
 
   const handleAgeInput = (event: FormEvent<HTMLInputElement>) => {
@@ -21,12 +21,12 @@ export function RegisterForm() {
     input.value = input.value.replace(/\D+/g, "").slice(0, 3);
 
     if (!input.value) {
-      input.setCustomValidity("กรุณากรอกข้อมูลนี้");
+      input.setCustomValidity("Please fill out this field.");
       return;
     }
 
     const age = Number(input.value);
-    input.setCustomValidity(age >= 1 && age <= 120 ? "" : "กรุณากรอกอายุ 1-120 ปี");
+    input.setCustomValidity(age >= 1 && age <= 120 ? "" : "Please enter an age between 1 and 120.");
   };
 
   const handlePhoneInput = (event: FormEvent<HTMLInputElement>) => {
@@ -34,50 +34,46 @@ export function RegisterForm() {
     input.value = input.value.replace(/\D+/g, "").slice(0, 10);
 
     if (!input.value) {
-      input.setCustomValidity("กรุณากรอกข้อมูลนี้");
+      input.setCustomValidity("Please fill out this field.");
       return;
     }
 
-    input.setCustomValidity(input.value.length === 10 ? "" : "กรุณากรอกเบอร์โทร 10 หลัก");
+    input.setCustomValidity(input.value.length === 10 ? "" : "Please enter a 10-digit phone number.");
   };
 
   return (
     <div className="flex min-h-[calc(100vh-73px)] items-center justify-center px-4 py-10">
       <div className="w-full max-w-xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_25px_90px_rgba(15,23,42,0.10)]">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-slate-950">สมัครสมาชิก</h1>
+          <h1 className="text-3xl font-bold text-slate-950">Register</h1>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            กรอกข้อมูลเพื่อสร้างบัญชีใหม่ ระบบจะสร้าง iduser ให้อัตโนมัติ
+            Create a new account. The system will generate an iduser automatically.
           </p>
-          <p className="mt-1 text-xs text-slate-500">รหัสผ่านต้องมีอย่างน้อย 8 ตัว และต้องมี a-z, A-Z, 0-9</p>
+          <p className="mt-1 text-xs text-slate-500">Passwords must be at least 8 characters and include a-z, A-Z, and 0-9.</p>
         </div>
 
         <form action={action} className="mt-8 space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">ชื่อ</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Name</label>
               <input
                 name="name"
                 type="text"
                 required
-                pattern="[A-Za-zก-๙ ]+"
-                title="กรอกชื่อเป็นตัวอักษรเท่านั้น"
                 className={validatedFieldClassName}
-                placeholder="ชื่อ"
+                placeholder="Name"
                 onInput={handleLetterOnlyInput}
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">นามสกุล</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Surname</label>
               <input
                 name="surname"
                 type="text"
                 required
-                pattern="[A-Za-zก-๙ ]+"
-                title="กรอกนามสกุลเป็นตัวอักษรเท่านั้น"
                 className={validatedFieldClassName}
-                placeholder="นามสกุล"
+                placeholder="Surname"
                 onInput={handleLetterOnlyInput}
               />
             </div>
@@ -85,69 +81,63 @@ export function RegisterForm() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">ชื่อเล่น</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Nickname</label>
               <input
                 name="nickname"
                 type="text"
                 required
-                pattern="[A-Za-zก-๙ ]+"
-                title="กรอกชื่อเล่นเป็นตัวอักษรเท่านั้น"
                 className={validatedFieldClassName}
-                placeholder="ชื่อเล่น"
+                placeholder="Nickname"
                 onInput={handleLetterOnlyInput}
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">อายุ</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Age</label>
               <input
                 name="age"
                 type="text"
                 required
                 inputMode="numeric"
                 pattern="[0-9]+"
-                title="กรอกอายุเป็นตัวเลขเท่านั้น"
                 className={validatedFieldClassName}
-                placeholder="อายุ"
+                placeholder="Age"
                 onInput={handleAgeInput}
               />
             </div>
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">ระดับชั้น</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Grade Level</label>
             <input
               name="gradeLevel"
               type="text"
               required
               className={validatedFieldClassName}
-              placeholder="เช่น ม.4 หรือ ป.6"
+              placeholder="e.g. Grade 10 or Year 6"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">โรงเรียน</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">School</label>
             <input
               name="school"
               type="text"
               required
-              pattern="[A-Za-zก-๙ ]+"
-              title="กรอกชื่อโรงเรียนเป็นตัวอักษรเท่านั้น"
               className={validatedFieldClassName}
-              placeholder="ชื่อโรงเรียน"
+              placeholder="School"
               onInput={handleLetterOnlyInput}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">เบอร์โทร</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Phone Number</label>
             <input
               name="phone"
               type="tel"
               required
               inputMode="tel"
               pattern="[0-9]{10}"
-              title="กรอกเบอร์โทรเป็นตัวเลขเท่านั้น"
               className={validatedFieldClassName}
               placeholder="0812345678"
               maxLength={10}
@@ -156,14 +146,14 @@ export function RegisterForm() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">รหัสผ่าน</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
             <input
               name="password"
               type="password"
               required
               minLength={8}
               className={validatedFieldClassName}
-              placeholder="อย่างน้อย 8 ตัว มี a-z, A-Z, 0-9"
+              placeholder="At least 8 characters with a-z, A-Z, and 0-9"
             />
           </div>
 
@@ -178,14 +168,14 @@ export function RegisterForm() {
             disabled={pending}
             className="w-full rounded-2xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {pending ? "กำลังสร้างบัญชี..." : "สมัครสมาชิก"}
+            {pending ? "Creating account..." : "Register"}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-slate-500">
-          มีบัญชีอยู่แล้ว?{" "}
+          Already have an account?{" "}
           <Link href="/login" className="font-medium text-blue-600 hover:underline">
-            เข้าสู่ระบบ
+            Sign in
           </Link>
         </div>
       </div>

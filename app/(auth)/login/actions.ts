@@ -14,20 +14,20 @@ export async function login(_: LoginActionState | undefined, formData: FormData)
 
   if (!iduser || !password) {
     return {
-      error: "กรุณากรอก iduser และรหัสผ่าน",
+      error: "Please enter both iduser and password.",
     };
   }
 
   const result = await authenticateUser(iduser, password);
   if (result.status === "locked") {
     return {
-      error: `ลองใหม่อีกครั้งในอีก ${result.retryAfterMinutes} นาที เนื่องจากกรอกรหัสผ่านผิดหลายครั้ง`,
+      error: `Too many failed attempts. Try again in ${result.retryAfterMinutes} minute(s).`,
     };
   }
 
   if (result.status !== "success") {
     return {
-      error: "iduser หรือรหัสผ่านไม่ถูกต้อง",
+      error: "Invalid iduser or password.",
     };
   }
 
