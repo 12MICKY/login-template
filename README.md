@@ -1,94 +1,148 @@
 # Login Template
 
-ตัวอย่างโปรเจกต์ Next.js สำหรับนำ flow login ไปใช้ซ้ำในงานอื่น โดยมีหน้าหลักที่มักต้องใช้ร่วมกันครบ:
+A reusable Next.js authentication starter for projects that need a practical login flow with account recovery and registration out of the box.
 
-- `เข้าสู่ระบบ`
-- `ลืม iduser`
-- `ลืมรหัสผ่าน`
-- `ยังไม่มีบัญชี? สมัครสมาชิก`
+This template includes:
+
+- login with `iduser + password`
+- account recovery entry page
+- forgot `iduser` flow
+- forgot password flow
+- registration with auto-generated `iduser`
+- server-side session handling
+- demo user seeding for local development
+- Docker support for fast setup
 
 ## Open Source
 
 - License: MIT
 - Contribution guide: `CONTRIBUTING.md`
-- CI: GitHub Actions จะรัน `lint` และ `build` อัตโนมัติบน push / pull request
+- CI: GitHub Actions runs `lint` and `build` on `push` and `pull_request`
+
+## Flowchart
+
+```mermaid
+flowchart TD
+    A[Visitor opens the app] --> B{Has an account?}
+    B -->|Yes| C[Login page]
+    B -->|No| D[Register page]
+
+    D --> E[Submit registration form]
+    E --> F[Create user and generate iduser]
+    F --> G[Redirect to login with success message]
+
+    C --> H{Credentials valid?}
+    H -->|Yes| I[Create session cookie]
+    I --> J[Open client area]
+    H -->|No| K{Forgot account details?}
+    K -->|Forgot iduser| L[Recover iduser page]
+    K -->|Forgot password| M[Reset password page]
+    K -->|Retry login| C
+
+    L --> N[Verify name, surname, and phone]
+    N --> O[Show matching iduser]
+    O --> C
+
+    M --> P[Verify iduser and phone]
+    P --> Q[Set new password]
+    Q --> R[Clear previous sessions]
+    R --> C
+```
 
 ## Release Notes
 
+### v0.3.0
+
+- converted the README to English
+- added a Mermaid flowchart for the authentication flow
+
 ### v0.2.0
 
-- เพิ่ม demo account ผ่าน env สำหรับเปิดใช้งานและทดสอบ flow ได้ทันที
-- เพิ่ม auto-seed ผู้ใช้ตัวอย่างในฐานข้อมูลเมื่อกำหนด `DEMO_USER_PASSWORD`
-- เพิ่ม `Dockerfile` และ `docker-compose.yml` สำหรับรัน app + PostgreSQL ได้เร็วขึ้น
-- แสดงข้อมูล demo account บนหน้าแรกเมื่อกำหนด `NEXT_PUBLIC_DEMO_*`
+- added demo account support through environment variables
+- added automatic demo-user seeding when `DEMO_USER_PASSWORD` is configured
+- added `Dockerfile` and `docker-compose.yml` for fast local startup with PostgreSQL
+- exposed demo account information on the homepage through `NEXT_PUBLIC_DEMO_*`
 
-## สิ่งที่มีใน template
+## Features
 
-- สมัครสมาชิกแล้วระบบสร้าง `iduser` อัตโนมัติ
-- เข้าสู่ระบบด้วย `iduser + password`
-- ค้นหา `iduser` จาก `ชื่อ + นามสกุล + เบอร์โทร`
-- รีเซ็ตรหัสผ่านจาก `iduser + เบอร์โทร + รหัสผ่านใหม่`
-- session แบบ cookie ฝั่ง server
-- lock account ชั่วคราวเมื่อกรอกรหัสผ่านผิดหลายครั้ง
-- auto-seed demo user จาก env
-- Docker setup สำหรับ local development
+- Auto-generate `iduser` values during registration
+- Authenticate with `iduser + password`
+- Recover `iduser` using `name + surname + phone`
+- Reset password using `iduser + phone + new password`
+- Store sessions in an HTTP-only cookie
+- Temporarily lock repeated failed login attempts
+- Seed a public-safe demo account for local development
+- Start the app and database quickly with Docker Compose
 
-## เริ่มใช้งาน
+## Quick Start
 
-1. ติดตั้ง dependency
+1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. สร้างฐานข้อมูล PostgreSQL และตั้งค่า `.env.local`
+2. Copy the environment file
 
 ```bash
 cp .env.example .env.local
 ```
 
-3. รันโปรเจกต์
+3. Start your PostgreSQL database, then run the app
 
 ```bash
 npm run dev
 ```
 
+4. Open `http://localhost:3000`
+
 ## Demo Account
 
-ค่า default ใน `.env.example`
+Default values in `.env.example`:
 
 - `iduser`: `GL0001`
 - `password`: `DemoPass123`
 
-เมื่อกำหนด `DEMO_USER_PASSWORD` ระบบจะ seed user นี้ให้อัตโนมัติในขั้น schema initialization
+If `DEMO_USER_PASSWORD` is set, the app will automatically seed the demo user during schema initialization.
 
 ## Docker
 
-รันทั้งแอปและ PostgreSQL:
+Start both the app and PostgreSQL:
 
 ```bash
 docker compose up --build
 ```
 
-จากนั้นเปิด `http://localhost:3000`
-
-ถ้าต้องการหยุด:
+Stop the stack:
 
 ```bash
 docker compose down
 ```
 
-## โครงสร้างสำคัญ
+After startup, open `http://localhost:3000`.
 
-- `app/(auth)/login` หน้า login
-- `app/(auth)/register` หน้าสมัครสมาชิก
-- `app/(auth)/forgot-iduser` หน้า recover iduser
-- `app/(auth)/forgot-password` หน้า reset password
-- `lib/auth-store.ts` business logic และ database layer
-- `docker-compose.yml` สำหรับเปิด app + db
-- `Dockerfile` สำหรับ build app container
+## Project Structure
 
-## หมายเหตุ
+- `app/(auth)/login` login page and server action
+- `app/(auth)/register` registration page and user creation flow
+- `app/(auth)/forgot-iduser` user ID recovery flow
+- `app/(auth)/forgot-password` password reset flow
+- `app/(auth)/account-recovery` shared recovery entry page
+- `app/client_area` protected example page after login
+- `lib/auth-store.ts` database access and auth business logic
+- `docker-compose.yml` local app + database stack
+- `Dockerfile` production-style app container build
 
-- template นี้ตั้งใจทำเป็นตัวอย่างสำหรับนำไปต่อยอด ไม่ได้ผูกกับ business เฉพาะระบบใด
-- หากจะใช้ใน production ควรเพิ่ม email / OTP / audit log / rate limit ระดับ network และ validation ตาม requirement จริง
+## Validation
+
+Run these before opening a pull request:
+
+```bash
+npm run lint
+npm run build
+```
+
+## Notes
+
+- This repository is meant to be a reusable example, not a business-specific implementation.
+- For production use, you should add stronger recovery controls such as email, OTP, audit logging, network-level rate limiting, and stricter validation based on your requirements.
