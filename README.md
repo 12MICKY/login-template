@@ -1,5 +1,10 @@
 # Login Template
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![CI](https://github.com/12MICKY/login-template/actions/workflows/ci.yml/badge.svg)](https://github.com/12MICKY/login-template/actions/workflows/ci.yml)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)
+
 A reusable Next.js authentication starter for projects that need a practical login flow with account recovery and registration out of the box.
 
 This template includes:
@@ -19,34 +24,46 @@ This template includes:
 - Contribution guide: `CONTRIBUTING.md`
 - CI: GitHub Actions runs `lint` and `build` on `push` and `pull_request`
 
-## Flowchart
+## System Flowchart
 
 ```mermaid
 flowchart TD
-    A[Visitor opens the app] --> B{Has an account?}
-    B -->|Yes| C[Login page]
-    B -->|No| D[Register page]
+    U[User] --> H[Next.js Auth Pages]
+    H --> L[Login Form]
+    H --> R[Register Form]
+    H --> FI[Forgot iduser Form]
+    H --> FP[Forgot Password Form]
 
-    D --> E[Submit registration form]
-    E --> F[Create user and generate iduser]
-    F --> G[Redirect to login with success message]
+    R --> RA[Register Action]
+    RA --> DB[(PostgreSQL)]
+    DB --> RID[Generate and store iduser]
+    RID --> LS[Redirect to login with success message]
 
-    C --> H{Credentials valid?}
-    H -->|Yes| I[Create session cookie]
-    I --> J[Open client area]
-    H -->|No| K{Forgot account details?}
-    K -->|Forgot iduser| L[Recover iduser page]
-    K -->|Forgot password| M[Reset password page]
-    K -->|Retry login| C
+    L --> LA[Login Action]
+    LA --> AV{Credentials valid?}
+    AV -->|Yes| SS[Create session token]
+    SS --> SC[Set HTTP-only session cookie]
+    SC --> CA[Client Area]
+    CA --> GS[Read session from cookie]
+    GS --> DB
 
-    L --> N[Verify name, surname, and phone]
-    N --> O[Show matching iduser]
-    O --> C
+    AV -->|No| RL[Record failed login attempt]
+    RL --> LK{Locked?}
+    LK -->|No| H
+    LK -->|Yes| ER[Return retry-after error]
 
-    M --> P[Verify iduser and phone]
-    P --> Q[Set new password]
-    Q --> R[Clear previous sessions]
-    R --> C
+    FI --> FIA[Recover iduser Action]
+    FIA --> DB
+    DB --> IDR[Match by name + surname + phone]
+    IDR --> IDS[Show matching iduser]
+    IDS --> H
+
+    FP --> FPA[Reset Password Action]
+    FPA --> DB
+    DB --> PWD[Verify iduser + phone]
+    PWD --> NPS[Store new password hash]
+    NPS --> CLS[Clear previous sessions]
+    CLS --> H
 ```
 
 ## Release Notes
@@ -54,7 +71,8 @@ flowchart TD
 ### v0.3.0
 
 - converted the README to English
-- added a Mermaid flowchart for the authentication flow
+- added badges for MIT, CI, Next.js, and PostgreSQL
+- added a Mermaid system flowchart for the authentication flow
 
 ### v0.2.0
 
