@@ -7,6 +7,12 @@
 - `ลืมรหัสผ่าน`
 - `ยังไม่มีบัญชี? สมัครสมาชิก`
 
+## Open Source
+
+- License: MIT
+- Contribution guide: `CONTRIBUTING.md`
+- CI: GitHub Actions จะรัน `lint` และ `build` อัตโนมัติบน push / pull request
+
 ## Release Notes
 
 ### v0.2.0
