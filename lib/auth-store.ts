@@ -34,6 +34,18 @@ declare global {
   var __loginTemplateSchemaInit: Promise<void> | undefined;
 }
 
+type DemoSeedConfig = {
+  iduser: string;
+  name: string;
+  surname: string;
+  nickname: string;
+  age: number | null;
+  gradeLevel: string;
+  school: string;
+  phone: string;
+  password: string;
+};
+
 function getPositiveIntegerEnv(name: string, fallbackValue: number) {
   const rawValue = process.env[name];
   if (!rawValue) {
@@ -55,6 +67,34 @@ function getDatabaseUrl() {
   }
 
   return databaseUrl;
+}
+
+function getOptionalTrimmedEnv(name: string) {
+  const value = process.env[name]?.trim();
+  return value ? value : null;
+}
+
+function getDemoSeedConfig(): DemoSeedConfig | null {
+  const password = process.env.DEMO_USER_PASSWORD;
+  if (!password) {
+    return null;
+  }
+
+  const iduser = normalizeIdUser(process.env.DEMO_USER_IDUSER ?? "GL0001");
+  const ageRaw = getOptionalTrimmedEnv("DEMO_USER_AGE");
+  const age = ageRaw ? Number(ageRaw) : 16;
+
+  return {
+    iduser,
+    name: getOptionalTrimmedEnv("DEMO_USER_NAME") ?? "Demo",
+    surname: getOptionalTrimmedEnv("DEMO_USER_SURNAME") ?? "Student",
+    nickname: getOptionalTrimmedEnv("DEMO_USER_NICKNAME") ?? "Demo",
+    age: Number.isInteger(age) ? age : 16,
+    gradeLevel: getOptionalTrimmedEnv("DEMO_USER_GRADE_LEVEL") ?? "ม.4",
+    school: getOptionalTrimmedEnv("DEMO_USER_SCHOOL") ?? "Demo School",
+    phone: normalizePhone(process.env.DEMO_USER_PHONE ?? "0812345678"),
+    password,
+  };
 }
 
 function getPool() {
@@ -105,6 +145,37 @@ async function ensureSchema() {
         CREATE INDEX IF NOT EXISTS idx_login_attempts_locked_until ON login_attempts(locked_until);
         CREATE INDEX IF NOT EXISTS idx_users_identity_lookup ON users(LOWER(name), LOWER(surname), phone);
       `);
+
+      const demoSeed = getDemoSeedConfig();
+      if (demoSeed) {
+        await pool.query(
+          `
+            INSERT INTO users (iduser, name, surname, nickname, age, grade_level, school, phone, password_hash)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ON CONFLICT (iduser)
+            DO UPDATE SET
+              name = EXCLUDED.name,
+              surname = EXCLUDED.surname,
+              nickname = EXCLUDED.nickname,
+              age = EXCLUDED.age,
+              grade_level = EXCLUDED.grade_level,
+              school = EXCLUDED.school,
+              phone = EXCLUDED.phone,
+              password_hash = EXCLUDED.password_hash
+          `,
+          [
+            demoSeed.iduser,
+            normalizeName(demoSeed.name),
+            normalizeName(demoSeed.surname),
+            normalizeName(demoSeed.nickname),
+            demoSeed.age,
+            demoSeed.gradeLevel,
+            normalizeName(demoSeed.school),
+            normalizePhone(demoSeed.phone),
+            hashPassword(demoSeed.password),
+          ],
+        );
+      }
     })();
   }
 

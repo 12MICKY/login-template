@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { getDemoAccount } from "@/lib/demo-account";
 
 export default function HomePage() {
+  const demoAccount = getDemoAccount();
+
   return (
     <main className="px-4 py-16 sm:px-6">
       <section className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -48,6 +51,18 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {demoAccount && (
+            <div className="mt-6 rounded-3xl border border-emerald-200 bg-emerald-50 p-5">
+              <p className="text-sm font-semibold text-emerald-900">Demo Account</p>
+              <p className="mt-2 text-sm text-emerald-800">
+                iduser: <span className="font-semibold">{demoAccount.iduser}</span>
+              </p>
+              <p className="mt-1 text-sm text-emerald-800">
+                password: <span className="font-semibold">{demoAccount.password}</span>
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </main>

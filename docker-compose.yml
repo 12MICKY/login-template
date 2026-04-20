@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: login-template-postgres
+    environment:
+      POSTGRES_DB: login_template
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d login_template"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: login-template-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/login_template
+      MAX_FAILED_LOGIN_ATTEMPTS: 5
+      LOGIN_LOCK_DURATION_MS: 900000
+      DEMO_USER_IDUSER: GL0001
+      DEMO_USER_NAME: Demo
+      DEMO_USER_SURNAME: Student
+      DEMO_USER_NICKNAME: Demo
+      DEMO_USER_AGE: 16
+      DEMO_USER_GRADE_LEVEL: ม.4
+      DEMO_USER_SCHOOL: Demo School
+      DEMO_USER_PHONE: 0812345678
+      DEMO_USER_PASSWORD: DemoPass123
+      NEXT_PUBLIC_DEMO_IDUSER: GL0001
+      NEXT_PUBLIC_DEMO_PASSWORD: DemoPass123
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
